@@ -1,0 +1,55 @@
+import java.util.*;
+
+class Solution {
+    public long minimumCost(int[] nums) {
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        int median = nums[n / 2];
+
+        long p1 = getPrevPalindrome(median);
+        long p2 = getNextPalindrome(median);
+
+        long cost1 = getCost(nums, p1);
+        long cost2 = getCost(nums, p2);
+
+        return Math.min(cost1, cost2);
+    }
+
+    private long getCost(int[] nums, long target) {
+        long cost = 0;
+
+        for (int num : nums) {
+            cost += Math.abs((long)num - target);
+        }
+
+        return cost;
+    }
+
+    private long getPrevPalindrome(int x) {
+        while (x > 0) {
+            if (isPalindrome(x)) return x;
+            x--;
+        }
+        return 1;
+    }
+
+    private long getNextPalindrome(int x) {
+        while (true) {
+            if (isPalindrome(x)) return x;
+            x++;
+        }
+    }
+
+    private boolean isPalindrome(long num) {
+        long original = num;
+        long rev = 0;
+
+        while (num > 0) {
+            rev = rev * 10 + num % 10;
+            num /= 10;
+        }
+
+        return original == rev;
+    }
+}
